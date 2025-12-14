@@ -14,6 +14,19 @@ Dadurch:
 - Organisation,"Dokumente, Konfiguration, Code und Daten sind logisch getrennt."
 - Automatisierung,Durch klare Entrypoints und Abhängigkeitsdateien lässt sich der gesamte Prozess automatisieren (CI/CD).
 
+## 📁 Projektstruktur im Detail
+
+Die Ordnerstruktur trennt Code, Daten und Konfiguration strikt, um Klarheit und Modularität zu maximieren.
+
+| Ordner | Zweck | Hauptinhalt |
+| :--- | :--- | :--- |
+| **`config/`** | **Konfiguration** | Statische Parameter, Hyperparameter, und Pfade (`.yaml`, `.json`). |
+| **`data/`** | **Datenversionierung** | Alle Datasets, getrennt nach Verarbeitungsstadium. |
+| **`entrypoint/`** | **Start-Skripte** | Hauptskripte zur Orchestrierung der Pipelines (`train.py`, `inference.py`). |
+| **`notebooks/`** | **Exploration (EDA)** | Jupyter Notebooks für iterative Analyse und Prototyping. |
+| **`src/`** | **Quellcode** | Modularer, testbarer Code und wiederverwendbare Pipelines (`utils.py`, `pipelines/`). |
+| **`tests/`** | **Qualitätssicherung** | Unit-Tests zur Überprüfung der Korrektheit des Codes in `src/`. |
+
 
 # Wie sollte die Struktur verwendet werden?
 
@@ -34,6 +47,34 @@ Produktionsreifer Quellcode. Enthält alle modularen Funktionen, Klassen und Pip
 
 ## tests/
 Qualitätssicherung. Beinhaltet Unit-Tests und Integrationstests, um die Korrektheit des Codes in src/ zu überprüfen. Führen Sie Tests vor jedem Deployment aus (z.B. mit pytest). Dies sichert die Code-Qualität und beugt Regressionen vor.
+
+## 💾 Daten-Workflow: Die `data/`-Struktur
+
+Die Ordner unter `data/` dienen der Versionierung und dem Schutz der Datenintegrität. Die Daten fließen sequenziell durch diese Ordner, gesteuert durch die Skripte in `src/pipelines/`.
+
+| Ordner | Funktion | Git-Status |
+| :--- | :--- | :--- |
+| **`01-raw/`** | **Originaldaten** | Die **unveränderlichen** Quelldaten. NIEMALS manuell verändern. |
+| **`02-processed/`** | **Bereinigte Daten** | Daten nach Bereinigung (Fehlwerte, Formatierung) – bereit für das Feature Engineering. |
+| **`03-features/`** | **Feature-Sets** | Daten, die alle benötigten Features und Codierungen enthalten – direkter Input für das Modell. |
+| **`04-predictions/`** | **Modellergebnisse** | Die Ausgabe der Inferenz-Skripte (`inference.py`) wie Vorhersagewerte oder Metriken. |
+
+### 🚨 Wichtiger Hinweis zur Versionierung
+
+Da die Dateien in `data/` oft sehr groß sind, werden sie in der Regel in der `.gitignore` **ignoriert**.
+
+* Um die leere Ordnerstruktur dennoch in Git zu verfolgen, enthalten alle Unterordner die Platzhalterdatei **`.gitkeep`**.
+* Für die Versionierung der **tatsächlichen Daten** verwenden Sie bitte **DVC (Data Version Control)**.
+
+---
+
+## 🛠 Entwicklung und Tests
+
+* **Tests ausführen:**
+    ```bash
+    python -m pytest tests/
+    ```
+* **Code in Notebooks:** Führen Sie explorativen Code in `notebooks/` aus. Sobald die Logik ausgereift ist, migrieren Sie diese in die Module in `src/` (z.B. in `src/pipelines/data_processing.py`), damit sie testbar und reproduzierbar wird.
     ├── __init__.py
     └── unit/                    # Unit-Tests für src/
         └── test_utils.py
