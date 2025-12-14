@@ -14,46 +14,6 @@ Dadurch:
 - Organisation,"Dokumente, Konfiguration, Code und Daten sind logisch getrennt."
 - Automatisierung,Durch klare Entrypoints und Abhängigkeitsdateien lässt sich der gesamte Prozess automatisieren (CI/CD).
 
-# Projektstruktur
-
-project_root/
-├── .gitignore
-├── README.md
-├── How_to_use_this_template.md  <-- Die angeforderte Dokumentation
-├── Dockerfile
-├── requirements-dev.txt
-├── requirements-prod.txt
-├── Makefile
-│
-├── config/
-│   ├── __init__.py
-│   ├── main_config.yaml         # Hauptkonfiguration (Pfade, Metriken)
-│   └── model_params.yaml        # Hyperparameter des Modells
-│
-├── data/
-│   ├── 01-raw/                  # Originaldaten (unverändert)
-│   ├── 02-processed/            # Bereinigte/transformierte Daten
-│   ├── 03-features/             # Daten mit Feature-Engineering
-│   └── 04-predictions/          # Modellergebnisse/Vorhersagen
-│
-├── entrypoint/
-│   ├── __init__.py
-│   ├── train.py                 # Startet das Training des Modells
-│   └── inference.py             # Startet die Vorhersage (Inferenz)
-│
-├── notebooks/
-│   ├── EDA.ipynb                # Explorative Datenanalyse
-│   └── prototype_features.ipynb # Prototyping von Features/Modellen
-│
-├── src/                         # Produktionsreifer Code (importierbar)
-│   ├── __init__.py
-│   ├── utils.py                 # Allgemeine Hilfsfunktionen
-│   └── pipelines/
-│       ├── __init__.py
-│       ├── data_processing.py   # Logik für Bereinigung und Transformation
-│       └── model_training.py    # Logik für Training, Speicherung und Metriken
-│
-└── tests/
 
 # Wie sollte die Struktur verwendet werden?
 
