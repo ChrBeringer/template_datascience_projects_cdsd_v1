@@ -23,7 +23,7 @@ Konfiguration und Parameter. Speichert alle statischen Einstellungen, die sich j
 ## /data 
 Organisiert alle Daten nach ihrem Verarbeitungszustand (Rohdaten bis Endergebnisse), um die Nachvollziehbarkeit zu gewährleisten. Niemals Daten in 01-raw/ verändern! Die Skripte in src/pipelines/ generieren die nachfolgenden Stufen (02-processed/, 03-features/).
 
-## entrypoint/
+## /entrypoint
 Anwendungsstartpunkte. Dient als Schnittstelle für das Ausführen der Hauptaufgaben des Projekts. Enthält keine Logik, sondern orchestriert die Pipelines aus src/.Dies sind die Skripte, die Sie direkt über die Kommandozeile aufrufen (z.B. python entrypoint/train.py). Sie werden für die Automatisierung (CI/CD) verwendet.
 
 ## notebooks/
