@@ -1,5 +1,5 @@
 # template_datascience_projects_cdsd_v1
-Ein template für wissenschaftliche Data-Science-Projekte basierend auf der Cookie-Cutter-Struktur (CDSD).
+Dies ist ein template für wissenschaftliche Data-Science-Projekte basierend auf der Cookie-Cutter-Struktur (CDSD) und gängiger Best-Practice.
 Eine standardisierte, vorstrukturierte Projektvorlage (Template), die entwickelt wurde, um die Reproduzierbarkeit und Organisation von Data-Science-Projekten zu gewährleisten.
 
 # Wichtige Grundprinzipien
