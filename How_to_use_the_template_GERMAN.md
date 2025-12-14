@@ -2,7 +2,7 @@
 Ein template für wissenschaftliche Data-Science-Projekte basierend auf der Cookie-Cutter-Struktur (CDSD).
 Eine standardisierte, vorstrukturierte Projektvorlage (Template), die entwickelt wurde, um die Reproduzierbarkeit und Organisation von Data-Science-Projekten zu gewährleisten.
 
-# Grundprinzipien
+# Wichtige Grundprinzipien
 1. Strikte Trennung von Daten: Der data/-Ordner wird in 01-raw, 02-processed, etc. unterteilt. Dies ist der wichtigste Beitrag zur Reproduzierbarkeit, da klar ist, welche Datenversion für welche Pipeline verwendet wird.
 2. Trennung von Exploration und Produktion: Notebooks (notebooks/) sind getrennt vom modularen, testbaren Code (src/).
 3. Standardisierte Entrypoints: Die Skripte in entrypoint/ ermöglichen eine einfache Automatisierung.
@@ -27,6 +27,16 @@ Die Ordnerstruktur trennt Code, Daten und Konfiguration strikt, um Klarheit und 
 | **`src/`** | **Quellcode** | Modularer, testbarer Code und wiederverwendbare Pipelines (`utils.py`, `pipelines/`). |
 | **`tests/`** | **Qualitätssicherung** | Unit-Tests zur Überprüfung der Korrektheit des Codes in `src/`. |
 
+### 💾 Daten-Workflow im Detail: Der `data/`-Ordner
+
+Der Ordner `data/` dient der **strengen Trennung der Datenbestände** nach ihrem Verarbeitungszustand und ist die Grundlage für die Reproduzierbarkeit.
+
+| Unterordner | Inhalt / Funktion | Regeln und Zweck |
+| :--- | :--- | :--- |
+| **`01-raw/`** | **Rohdaten (Original)** | Enthält die **ursprünglichen, unveränderten Quelldaten**. **Regel:** Diese Dateien dürfen nach dem ersten Hinzufügen **NIEMALS** verändert werden. Sie dienen als die einzige Quelle der Wahrheit. |
+| **`02-processed/`** | **Bereinigte Daten** | Enthält Datensätze, die die erste Phase der **Bereinigung** (fehlende Werte, Formatierung) durchlaufen haben. **Regel:** Diese Daten werden von Skripten in `src/pipelines/` aus `01-raw/` generiert. |
+| **`03-features/`** | **Feature-Sets** | Enthält die **fertigen Feature-Matrizen**, die unmittelbar als Eingabe (Input) für das Machine-Learning-Modell dienen. Alle Feature-Engineering-Schritte sind hier abgeschlossen (z.B. Skalierung, Encoding). |
+| **`04-predictions/`** | **Modellergebnisse** | Enthält die **Ausgabe** der trainierten Modelle. Dazu gehören die finalen Vorhersagewerte, Berichte oder Metrik-Dateien, die das Modell erzeugt hat. |
 
 # Wie sollte die Struktur verwendet werden?
 
@@ -59,12 +69,20 @@ Die Ordner unter `data/` dienen der Versionierung und dem Schutz der Datenintegr
 | **`03-features/`** | **Feature-Sets** | Daten, die alle benötigten Features und Codierungen enthalten – direkter Input für das Modell. |
 | **`04-predictions/`** | **Modellergebnisse** | Die Ausgabe der Inferenz-Skripte (`inference.py`) wie Vorhersagewerte oder Metriken. |
 
-### 🚨 Wichtiger Hinweis zur Versionierung
+### 🚨 Wichtiger Hinweis: Datenversionierung und Speicher
 
 Da die Dateien in `data/` oft sehr groß sind, werden sie in der Regel in der `.gitignore` **ignoriert**.
 
 * Um die leere Ordnerstruktur dennoch in Git zu verfolgen, enthalten alle Unterordner die Platzhalterdatei **`.gitkeep`**.
 * Für die Versionierung der **tatsächlichen Daten** verwenden Sie bitte **DVC (Data Version Control)**.
+
+
+Da große Datensätze die Performance von Git stark beeinträchtigen würden, werden die Dateien in `data/` in der Regel von der `.gitignore` **ignoriert**.
+
+**Zur Verwaltung und Versionierung der Datenbestände wird empfohlen:**
+
+1.  **Platzhalter:** Die Dateien **`.gitkeep`** in jedem Unterordner stellen sicher, dass die leere Ordnerstruktur in Git verfolgt wird.
+2.  **DVC (Data Version Control):** Verwenden Sie DVC, um **Metadaten** (Hash-Werte) der großen Dateien in Git zu speichern, während die eigentlichen Daten in einem dedizierten **Remote Storage** (z.B. S3, Google Cloud Storage) liegen. Dies ermöglicht die Reproduzierbarkeit jeder Datenversion, ohne das Git-Repository aufzublähen.
 
 ---
 
